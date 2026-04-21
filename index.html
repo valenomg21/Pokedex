@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokédex Web 3D</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="pokedex-container">
+        
+        <!-- PANEL IZQUIERDO -->
+        <div class="panel left-panel">
+            <div class="top-lights">
+                <div class="big-light-border">
+                    <div class="big-light"></div>
+                </div>
+                <div class="small-lights">
+                    <div class="light red"></div>
+                    <div class="light yellow"></div>
+                    <div class="light green"></div>
+                </div>
+            </div>
+
+            <!-- Pantalla principal de imagen -->
+            <div class="screen-border">
+                <div class="main-screen">
+                    <div class="glass-glare"></div> <!-- Efecto de cristal -->
+                    <img id="poke-image" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="Pokemon">
+                </div>
+                <div class="screen-decorations">
+                    <div class="red-btn"></div>
+                    <div class="red-btn"></div>
+                    <div class="speaker">
+                        <div></div><div></div><div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controles y Buscador -->
+            <div class="controls">
+                <input type="text" id="poke-input" placeholder="Buscar (Ej: Pikachu)">
+                
+                <!-- D-PAD 3D -->
+                <div class="d-pad">
+                    <button class="d-btn up" onclick="changeTab('info')" title="Info"></button>
+                    <button class="d-btn left" onclick="changeTab('combate')" title="Combate"></button>
+                    <div class="d-center"></div>
+                    <button class="d-btn right" onclick="changeTab('stats')" title="Stats"></button>
+                    <button class="d-btn down" onclick="changeTab('evoluciones')" title="Evoluciones"></button>
+                </div>
+            </div>
+
+            <!-- Pantalla verde de descripción -->
+            <div class="green-screen">
+                <div class="glass-glare-green"></div>
+                <h3 id="poke-name">Pikachu</h3>
+                <p id="poke-desc">Pokémon de ratón. Cuando varios de estos Pokémon se juntan, su energía puede causar tormentas eléctricas.</p>
+            </div>
+        </div>
+
+        <!-- BISAGRA CENTRAL -->
+        <div class="hinge">
+            <div class="hinge-cut"></div>
+            <div class="hinge-cut"></div>
+        </div>
+
+        <!-- PANEL DERECHO -->
+        <div class="panel right-panel">
+            <div class="right-screen-border">
+                <div class="right-screen">
+                    <div class="glass-glare-right"></div>
+                    <h2 id="tab-title">Información</h2>
+                    
+                    <!-- Contenedor de Pestañas -->
+                    <div class="tabs-container">
+                        
+                        <!-- INFO -->
+                        <div id="tab-info" class="tab-content active">
+                            <ul class="data-list">
+                                <li><strong>Número:</strong> <span id="poke-id">#025</span></li>
+                                <li><strong>Tipos:</strong> <span id="poke-types">Eléctrico</span></li>
+                                <li><strong>Altura:</strong> <span id="poke-height">0.4 m</span></li>
+                                <li><strong>Peso:</strong> <span id="poke-weight">6.0 kg</span></li>
+                                <li><strong>Grupo Huevo:</strong> <span id="poke-egg">Campo, Hada</span></li>
+                            </ul>
+                        </div>
+
+                        <!-- STATS -->
+                        <div id="tab-stats" class="tab-content">
+    <div class="stats-combat-container">
+        
+        <!-- PARTE SUPERIOR: 6 Stats (Ancho completo) -->
+        <div class="stats-column">
+            <div class="stat-row"><span class="stat-name">HP</span><div class="stat-bar-bg"><div class="stat-bar fill" id="stat-hp"></div></div></div>
+            <div class="stat-row"><span class="stat-name">Ataque</span><div class="stat-bar-bg"><div class="stat-bar fill" id="stat-atk"></div></div></div>
+            <div class="stat-row"><span class="stat-name">Defensa</span><div class="stat-bar-bg"><div class="stat-bar fill" id="stat-def"></div></div></div>
+            <div class="stat-row"><span class="stat-name">Atq. Esp</span><div class="stat-bar-bg"><div class="stat-bar fill" id="stat-spa"></div></div></div>
+            <div class="stat-row"><span class="stat-name">Def. Esp</span><div class="stat-bar-bg"><div class="stat-bar fill" id="stat-spd"></div></div></div>
+            <div class="stat-row"><span class="stat-name">Velocidad</span><div class="stat-bar-bg"><div class="stat-bar fill" id="stat-spe"></div></div></div>
+        </div>
+
+        <!-- PARTE INFERIOR: Combate -->
+        <div class="combat-column">
+            <div class="combat-info">
+                <div class="combat-box">
+                    <h4>Debilidades:</h4>
+                    <p id="poke-weak">Tierra</p>
+                </div>
+                <div class="combat-box">
+                    <h4>Resistencias:</h4>
+                    <p id="poke-resist">Volador, Acero</p>
+                </div>
+                <div class="combat-box full-width">
+                    <h4>Movimiento Destacado:</h4>
+                    <p id="poke-move">Impactrueno</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+                        <!-- EVOLUCIONES -->
+                        <div id="tab-evoluciones" class="tab-content">
+                            <div class="evo-chain">
+                                <div class="evo-item"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/172.png" alt="Pichu"><span>Pichu</span></div>
+                                <span class="arrow">➔</span>
+                                <div class="evo-item"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="Pikachu"><span>Pikachu</span></div>
+                                <span class="arrow">➔</span>
+                                <div class="evo-item"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/26.png" alt="Raichu"><span>Raichu</span></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
