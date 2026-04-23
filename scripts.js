@@ -25,6 +25,9 @@ const tipoColores = {
 };
 
 let cryUrl = null
+let spriteNormal = null; 
+let spriteShiny = null; 
+let isShiny = false;    
 
 document.getElementById('poke-input').addEventListener('keypress', function(e) {
     if (e.key === 'Enter') {
@@ -81,6 +84,12 @@ function actualizarPokedex(data) {
             move.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
     }
 
+    spriteNormal = data.sprites.front_default;
+    spriteShiny = data.sprites.front_shiny;
+    isShiny = false; // Reiniciamos el estado
+    document.querySelector('.shiny-btn').classList.remove('active'); // Apagamos la luz del botón
+    document.getElementById('poke-image').src = spriteNormal;
+
     cryUrl = data.cries?.latest || data.cries?.legacy || null
 
     buscarDescription(data.id);
@@ -92,6 +101,22 @@ function reproducirSonido() {
     const sonido = new Audio(cryUrl)
     sonido.volume = 0.1;
     sonido.play()
+}
+
+function toggleShiny() {
+    if (!spriteShiny) return; 
+
+    isShiny = !isShiny; // Cambia de true a false o viceversa
+    const imgPokemon = document.getElementById('poke-image');
+    const btnShiny = document.querySelector('.shiny-btn');
+
+    if (isShiny) {
+        imgPokemon.src = spriteShiny;
+        btnShiny.classList.add('active');
+    } else {
+        imgPokemon.src = spriteNormal;
+        btnShiny.classList.remove('active');
+    }
 }
 
 async function buscarDescription(id) {
@@ -108,6 +133,7 @@ async function buscarDescription(id) {
             data.egg_groups.map(e => tiposTraducidos[e.name] || e.name).join(', ');
 
         buscarEvoluciones(data.evolution_chain.url);
+        buscarFormas(data.varieties);
     } catch (e) {
         console.error('Error descripción:', e);
     }
@@ -223,5 +249,44 @@ async function buscarEvoluciones(url) {
 
     } catch (e) {
         console.error('Error evoluciones:', e);
+    }
+}
+
+async function buscarFormas(varieties) {
+    const contenedorFormas = document.getElementById('formas-container');
+    contenedorFormas.innerHTML = ''; // Limpiar lo anterior
+
+    // Filtrar todas las formas que NO sean la predeterminada
+    const formasAlt = varieties.filter(v => !v.is_default);
+
+    if (formasAlt.length > 0) {
+        for (let forma of formasAlt) {
+            try {
+                const res = await fetch(forma.pokemon.url);
+                const formaData = await res.json();
+                
+                // Asegurarnos de que la forma tenga un sprite en la API
+                if (formaData.sprites.front_default) {
+                    
+                    // Formateamos el nombre: "meowth-alola" -> "Alola"
+                    let partesNombre = formaData.name.split('-');
+                    partesNombre.shift(); // Quitamos el primer nombre (la especie base)
+                    let nombreLimpio = partesNombre.map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(' ');
+                    
+                    let div = document.createElement('div');
+                    div.className = 'evo-item'; // Reutilizamos tu diseño LCD
+                    div.innerHTML = `
+                        <img src="${formaData.sprites.front_default}" alt="${formaData.name}">
+                        <span>${nombreLimpio}</span>
+                    `;
+                    contenedorFormas.appendChild(div);
+                }
+            } catch (error) {
+                console.error("Error cargando forma", error);
+            }
+        }
+    } else {
+        // Si el Pokémon no tiene Megas ni formas regionales
+        contenedorFormas.innerHTML = '<p class="no-formas">Este Pokémon no tiene formas alternativas registradas.</p>';
     }
 }

@@ -30,7 +30,7 @@
                     <img id="poke-image" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="Pokemon">
                 </div>
                 <div class="screen-decorations">
-                    <div class="red-btn"></div>
+                    <button class="shiny-btn" onclick="toggleShiny()" title="Ver Forma Shiny">✨</button>
                     <div class="red-btn"></div>
                     <div class="speaker">
                         <div></div><div></div><div></div>
@@ -46,7 +46,7 @@
                     <button class="d-btn left"  onclick="changeTab('stats')"       title="Stats/Combate">◀</button>
                     <div class="d-center"></div>
                     <button class="d-btn right" onclick="changeTab('evoluciones')" title="Evoluciones">▶</button>
-                    <button class="d-btn down"  onclick="changeTab('info')"        title="Info">▼</button>
+                    <button class="d-btn down"  onclick="changeTab('formas')"        title="Formas Alternativas">▼</button>
                 </div>
             </div>
 
@@ -190,9 +190,20 @@
                                     <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/26.png" alt="Raichu">
                                     <span>Raichu</span>
                                 </div>
+                                <span class="arrow">➔</span>
+                                <div class="evo-item">
+                                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/26.png" alt="Raichu">
+                                    <span>Raichu</span>
+                                </div>
                             </div>
                         </div>
 
+                        <div id="tab-formas" class="tab-content">
+                            <div class="formas-grid" id="formas-container">
+                                
+                            </div>
+                        </div>
+                        
                     </div>
                 </div>
             </div>

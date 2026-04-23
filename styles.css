@@ -129,6 +129,31 @@ body {
     border-radius: 10px; box-shadow: inset 1px 1px 3px rgba(0,0,0,0.8);
 }
 
+.shiny-btn {
+    width: 30px;
+    height: 30px;
+    background: radial-gradient(circle at 30% 30%, #ffd700, #b8860b); /* Dorado */
+    border: 2px solid #333;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.5), inset -2px -2px 5px rgba(0,0,0,0.4);
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.1s, box-shadow 0.2s;
+}
+
+.shiny-btn:active {
+    transform: scale(0.90);
+}
+
+/* Cuando el modo Shiny está activado, el botón brilla */
+.shiny-btn.active {
+    box-shadow: 0 0 15px #ffd700, inset 2px 2px 5px rgba(255,255,255,0.8);
+    background: radial-gradient(circle at 30% 30%, #fff, #ffd700);
+}
+
 /* ── Controles / D-pad ─────────────────────────────────────────────────── */
 .controls {
     display: flex; justify-content: space-between; align-items: center;
@@ -545,3 +570,44 @@ body {
 .evo-item span   { display: block; margin-top: 5px; font-size: 0.85rem; font-weight: bold; color: #111; text-transform: capitalize; }
 
 .arrow { font-size: 24px; color: #f7d51d; text-shadow: 2px 2px 0px #000; margin: 0 10px; flex-shrink: 0; }
+
+.formas-grid {
+    display: flex;
+    flex-wrap: wrap; /* Permite que salten a la siguiente línea si son muchas */
+    gap: 15px;
+    justify-content: center;
+    margin-top: 10px;
+    
+    /* Agregamos scroll vertical por si el Pokémon tiene muchísimas formas */
+    max-height: 380px; 
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+/* Reutilizamos el estilo de tarjeta LCD de las evoluciones */
+.formas-grid .evo-item {
+    margin: 0;
+}
+
+/* Mensaje cuando no tiene formas */
+.no-formas {
+    color: #fff;
+    text-align: center;
+    margin-top: 50px;
+    font-size: 1.1rem;
+    font-style: italic;
+    opacity: 0.7;
+}
+
+/* Estilo para la barra de scroll vertical de esta pestaña */
+.formas-grid::-webkit-scrollbar {
+    width: 8px;
+}
+.formas-grid::-webkit-scrollbar-track {
+    background: rgba(0,0,0,0.2);
+    border-radius: 4px;
+}
+.formas-grid::-webkit-scrollbar-thumb {
+    background: #3b7bbf;
+    border-radius: 4px;
+}
