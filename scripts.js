@@ -86,8 +86,8 @@ function actualizarPokedex(data) {
 
     spriteNormal = data.sprites.front_default;
     spriteShiny = data.sprites.front_shiny;
-    isShiny = false; // Reiniciamos el estado
-    document.querySelector('.shiny-btn').classList.remove('active'); // Apagamos la luz del botón
+    isShiny = false;
+    document.querySelector('.shiny-btn').classList.remove('active');
     document.getElementById('poke-image').src = spriteNormal;
 
     cryUrl = data.cries?.latest || data.cries?.legacy || null
@@ -106,7 +106,7 @@ function reproducirSonido() {
 function toggleShiny() {
     if (!spriteShiny) return; 
 
-    isShiny = !isShiny; // Cambia de true a false o viceversa
+    isShiny = !isShiny;
     const imgPokemon = document.getElementById('poke-image');
     const btnShiny = document.querySelector('.shiny-btn');
 
@@ -139,7 +139,6 @@ async function buscarDescription(id) {
     }
 }
 
-// ─── Combate: calcula multiplicadores reales ─────────────────────────────────
 async function buscarCombate(tipos) {
     const efectividad = {};
 
@@ -179,7 +178,6 @@ async function buscarCombate(tipos) {
     }
 }
 
-// ─── Badges de tipo con color y multiplicador ────────────────────────────────
 function renderBadges(elementId, lista) {
     const container = document.getElementById(elementId);
     container.innerHTML = '';
@@ -211,7 +209,6 @@ function renderBadges(elementId, lista) {
     });
 }
 
-// ─── Cadena evolutiva ────────────────────────────────────────────────────────
 async function buscarEvoluciones(url) {
     try {
         const res     = await fetch(url);
@@ -254,9 +251,8 @@ async function buscarEvoluciones(url) {
 
 async function buscarFormas(varieties) {
     const contenedorFormas = document.getElementById('formas-container');
-    contenedorFormas.innerHTML = ''; // Limpiar lo anterior
+    contenedorFormas.innerHTML = ''; 
 
-    // Filtrar todas las formas que NO sean la predeterminada
     const formasAlt = varieties.filter(v => !v.is_default);
 
     if (formasAlt.length > 0) {
@@ -265,16 +261,14 @@ async function buscarFormas(varieties) {
                 const res = await fetch(forma.pokemon.url);
                 const formaData = await res.json();
                 
-                // Asegurarnos de que la forma tenga un sprite en la API
                 if (formaData.sprites.front_default) {
                     
-                    // Formateamos el nombre: "meowth-alola" -> "Alola"
                     let partesNombre = formaData.name.split('-');
-                    partesNombre.shift(); // Quitamos el primer nombre (la especie base)
+                    partesNombre.shift(); 
                     let nombreLimpio = partesNombre.map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(' ');
                     
                     let div = document.createElement('div');
-                    div.className = 'evo-item'; // Reutilizamos tu diseño LCD
+                    div.className = 'evo-item';
                     div.innerHTML = `
                         <img src="${formaData.sprites.front_default}" alt="${formaData.name}">
                         <span>${nombreLimpio}</span>
@@ -286,7 +280,6 @@ async function buscarFormas(varieties) {
             }
         }
     } else {
-        // Si el Pokémon no tiene Megas ni formas regionales
         contenedorFormas.innerHTML = '<p class="no-formas">Este Pokémon no tiene formas alternativas registradas.</p>';
     }
 }
