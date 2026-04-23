@@ -26,7 +26,7 @@
             <!-- Pantalla principal de imagen -->
             <div class="screen-border">
                 <div class="main-screen">
-                    <div class="glass-glare"></div> <!-- Efecto de cristal -->
+                    <div class="glass-glare"></div>
                     <img id="poke-image" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="Pokemon">
                 </div>
                 <div class="screen-decorations">
@@ -41,22 +41,36 @@
             <!-- Controles y Buscador -->
             <div class="controls">
                 <input type="text" id="poke-input" placeholder="Buscar (Ej: Pikachu)">
-                
-                <!-- D-PAD 3D -->
                 <div class="d-pad">
-                    <button class="d-btn up" onclick="changeTab('info')" title="Info"></button>
-                    <button class="d-btn left" onclick="changeTab('combate')" title="Combate"></button>
+                    <button class="d-btn up"    onclick="changeTab('info')"        title="Info">▲</button>
+                    <button class="d-btn left"  onclick="changeTab('stats')"       title="Stats/Combate">◀</button>
                     <div class="d-center"></div>
-                    <button class="d-btn right" onclick="changeTab('stats')" title="Stats"></button>
-                    <button class="d-btn down" onclick="changeTab('evoluciones')" title="Evoluciones"></button>
+                    <button class="d-btn right" onclick="changeTab('evoluciones')" title="Evoluciones">▶</button>
+                    <button class="d-btn down"  onclick="changeTab('info')"        title="Info">▼</button>
                 </div>
             </div>
 
-            <!-- Pantalla verde de descripción -->
-            <div class="green-screen">
-                <div class="glass-glare-green"></div>
-                <h3 id="poke-name">Pikachu</h3>
-                <p id="poke-desc">Pokémon de ratón. Cuando varios de estos Pokémon se juntan, su energía puede causar tormentas eléctricas.</p>
+            <!-- CONSOLA INFERIOR: LCD + parlante retro -->
+            <div class="console-bottom">
+
+                <!-- Display LCD con el nombre -->
+                <div class="lcd-display">
+                    <span class="lcd-label">NOW VIEWING</span>
+                    <span class="lcd-value" id="poke-name">— — —</span>
+                </div>
+
+                <!-- Parlante retro con grilla de puntos -->
+                <div class="speaker-panel" onclick="reproducirSonido()" title="Escuchar Grito">
+                    <div class="speaker-grille">
+                        <div class="speaker-row"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+                        <div class="speaker-row"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+                        <div class="speaker-row"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+                        <div class="speaker-row"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+                        <div class="speaker-row"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+                    </div>
+                    <div class="speaker-note">♪</div>
+                </div>
+
             </div>
         </div>
 
@@ -73,63 +87,109 @@
                     <div class="glass-glare-right"></div>
                     <h2 id="tab-title">Información</h2>
                     
-                    <!-- Contenedor de Pestañas -->
                     <div class="tabs-container">
-                        
-                        <!-- INFO -->
+
+                        <!-- TAB: INFO — datos + descripción -->
                         <div id="tab-info" class="tab-content active">
-                            <ul class="data-list">
-                                <li><strong>Número:</strong> <span id="poke-id">#025</span></li>
-                                <li><strong>Tipos:</strong> <span id="poke-types">Eléctrico</span></li>
-                                <li><strong>Altura:</strong> <span id="poke-height">0.4 m</span></li>
-                                <li><strong>Peso:</strong> <span id="poke-weight">6.0 kg</span></li>
-                                <li><strong>Grupo Huevo:</strong> <span id="poke-egg">Campo, Hada</span></li>
-                            </ul>
+
+                            <!-- Fila superior: ficha de datos + sprite pequeño -->
+                            <div class="info-top-row">
+                                <ul class="data-list">
+                                    <li><strong>Número</strong><span id="poke-id">#025</span></li>
+                                    <li><strong>Tipo</strong><span id="poke-types">Eléctrico</span></li>
+                                    <li><strong>Altura</strong><span id="poke-height">0.4 m</span></li>
+                                    <li><strong>Peso</strong><span id="poke-weight">6.0 kg</span></li>
+                                    <li><strong>Grupo Huevo</strong><span id="poke-egg">Campo, Hada</span></li>
+                                </ul>
+
+                                <!-- Sprite duplicado dentro de la ficha -->
+                                <div class="info-sprite-box">
+                                    <div class="sprite-scanlines"></div>
+                                    <img id="poke-image-info" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="Pokemon">
+                                </div>
+                            </div>
+
+                            <!-- Separador retro -->
+                            <div class="retro-divider">
+                                <span>▸ POKÉDEX ENTRY ◂</span>
+                            </div>
+
+                            <!-- Descripción estilo terminal -->
+                            <div class="desc-terminal">
+                                <div class="terminal-header">
+                                    <span class="terminal-dot red"></span>
+                                    <span class="terminal-dot yellow"></span>
+                                    <span class="terminal-dot green"></span>
+                                    <span class="terminal-title">DATA.LOG</span>
+                                </div>
+                                <p id="poke-desc" class="terminal-text">Esperando datos del escáner...</p>
+                            </div>
+
                         </div>
 
-                        <!-- STATS -->
+                        <!-- TAB: STATS + COMBATE -->
                         <div id="tab-stats" class="tab-content">
-    <div class="stats-combat-container">
-        
-        <!-- PARTE SUPERIOR: 6 Stats (Ancho completo) -->
-        <div class="stats-column">
-            <div class="stat-row"><span class="stat-name">HP</span><div class="stat-bar-bg"><div class="stat-bar fill" id="stat-hp"></div></div></div>
-            <div class="stat-row"><span class="stat-name">Ataque</span><div class="stat-bar-bg"><div class="stat-bar fill" id="stat-atk"></div></div></div>
-            <div class="stat-row"><span class="stat-name">Defensa</span><div class="stat-bar-bg"><div class="stat-bar fill" id="stat-def"></div></div></div>
-            <div class="stat-row"><span class="stat-name">Atq. Esp</span><div class="stat-bar-bg"><div class="stat-bar fill" id="stat-spa"></div></div></div>
-            <div class="stat-row"><span class="stat-name">Def. Esp</span><div class="stat-bar-bg"><div class="stat-bar fill" id="stat-spd"></div></div></div>
-            <div class="stat-row"><span class="stat-name">Velocidad</span><div class="stat-bar-bg"><div class="stat-bar fill" id="stat-spe"></div></div></div>
-        </div>
+                            <div class="stats-combat-container">
+                                <div class="stats-section">
+                                    <div class="stat-row">
+                                        <span class="stat-name">HP</span>
+                                        <div class="stat-bar-bg"><div class="stat-bar fill" id="stat-hp"></div></div>
+                                        <span class="stat-num" id="stat-hp-num">—</span>
+                                    </div>
+                                    <div class="stat-row">
+                                        <span class="stat-name">Ataque</span>
+                                        <div class="stat-bar-bg"><div class="stat-bar fill" id="stat-atk"></div></div>
+                                        <span class="stat-num" id="stat-atk-num">—</span>
+                                    </div>
+                                    <div class="stat-row">
+                                        <span class="stat-name">Defensa</span>
+                                        <div class="stat-bar-bg"><div class="stat-bar fill" id="stat-def"></div></div>
+                                        <span class="stat-num" id="stat-def-num">—</span>
+                                    </div>
+                                    <div class="stat-row">
+                                        <span class="stat-name">Atq. Esp</span>
+                                        <div class="stat-bar-bg"><div class="stat-bar fill" id="stat-spa"></div></div>
+                                        <span class="stat-num" id="stat-spa-num">—</span>
+                                    </div>
+                                    <div class="stat-row">
+                                        <span class="stat-name">Def. Esp</span>
+                                        <div class="stat-bar-bg"><div class="stat-bar fill" id="stat-spd"></div></div>
+                                        <span class="stat-num" id="stat-spd-num">—</span>
+                                    </div>
+                                    <div class="stat-row">
+                                        <span class="stat-name">Velocidad</span>
+                                        <div class="stat-bar-bg"><div class="stat-bar fill" id="stat-spe"></div></div>
+                                        <span class="stat-num" id="stat-spe-num">—</span>
+                                    </div>
+                                </div>
+                                <div class="combat-section">
+                                    <h4 class="combat-title">Debilidades</h4>
+                                    <div class="type-badges-row" id="poke-weak"></div>
+                                    <h4 class="combat-title">Resistencias / Inmunidades</h4>
+                                    <div class="type-badges-row" id="poke-resist"></div>
+                                    <h4 class="combat-title">Movimiento destacado</h4>
+                                    <p id="poke-move" class="move-text">—</p>
+                                </div>
+                            </div>
+                        </div>
 
-        <!-- PARTE INFERIOR: Combate -->
-        <div class="combat-column">
-            <div class="combat-info">
-                <div class="combat-box">
-                    <h4>Debilidades:</h4>
-                    <p id="poke-weak">Tierra</p>
-                </div>
-                <div class="combat-box">
-                    <h4>Resistencias:</h4>
-                    <p id="poke-resist">Volador, Acero</p>
-                </div>
-                <div class="combat-box full-width">
-                    <h4>Movimiento Destacado:</h4>
-                    <p id="poke-move">Impactrueno</p>
-                </div>
-            </div>
-        </div>
-
-    </div>
-</div>
-
-                        <!-- EVOLUCIONES -->
+                        <!-- TAB: EVOLUCIONES -->
                         <div id="tab-evoluciones" class="tab-content">
                             <div class="evo-chain">
-                                <div class="evo-item"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/172.png" alt="Pichu"><span>Pichu</span></div>
+                                <div class="evo-item">
+                                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/172.png" alt="Pichu">
+                                    <span>Pichu</span>
+                                </div>
                                 <span class="arrow">➔</span>
-                                <div class="evo-item"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="Pikachu"><span>Pikachu</span></div>
+                                <div class="evo-item">
+                                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="Pikachu">
+                                    <span>Pikachu</span>
+                                </div>
                                 <span class="arrow">➔</span>
-                                <div class="evo-item"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/26.png" alt="Raichu"><span>Raichu</span></div>
+                                <div class="evo-item">
+                                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/26.png" alt="Raichu">
+                                    <span>Raichu</span>
+                                </div>
                             </div>
                         </div>
 
